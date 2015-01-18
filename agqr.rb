@@ -6,7 +6,6 @@ require 'pathname'
 require 'active_support/core_ext/numeric/time'
 require './lib/slack'
 
-#AGQR_STREAM_URL = 'rtmp://fms-base1.mitene.ad.jp/agqr/aandg11'
 AGQR_STREAM_URL = 'rtmp://fms-base1.mitene.ad.jp/agqr/aandg22'
 DATA_DIR = File.expand_path("#{File.dirname(__FILE__)}/data")
 MARGIN = 15
