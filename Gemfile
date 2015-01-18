@@ -1,5 +1,5 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "whenever", :require => false
-gem "activesupport"
-gem 'pry'
+gem 'clockwork'
+gem 'activesupport'
+gem 'faraday'
