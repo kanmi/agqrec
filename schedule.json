@@ -1,27 +1,57 @@
 [
   {
+	"title": "A&G NEXT BREAKS 黒沢ともよのFIVE STARS",
+	"at": "Monday 19:30",
+	"length": 30
+  },
+  {
+	"title": "A&G NEXT BREAKS 黒沢ともよのFIVE STARS (repeat)",
+	"at": "Tuesday 14:30",
+	"length": 30
+  },
+  {
+	"title": "A&G NEXT BREAKS 深川芹亜のFIVE STARS",
+    "at": "Tuesday 19:30",
+	"length": 30
+  },
+  {
+	"title": "A&G NEXT BREAKS 田中美海のFIVE STARS",
+    "at": "Wednesday 19:30",
+	"length": 30
+  },
+  {
+	"title": "A&G NEXT BREAKS 松田利冴のFIVE STARS",
+    "at": "Thursday 19:30",
+	"length": 30
+  },
+  {
+	"title": "A&G NEXT BREAKS 吉田有里のFIVE STARS",
+    "at": "Friday 19:30",
+	"length": 30
+  },
+  {
     "title": "A&G NEXT GENERATION Lady GO!! 月曜日 上坂すみれ",
-    "at": "Monday 17:00",
+    "at": "Monday 20:00",
     "length": 60
   },
   {
     "title": "A&G NEXT GENERATION Lady GO!! 火曜日 小松未可子",
-    "at": "Tuesday 17:00",
+    "at": "Tuesday 20:00",
     "length": 60
   },
   {
     "title": "A&G NEXT GENERATION Lady GO!! 水曜日 大久保瑠美",
-    "at": "Wednesday 17:00",
+    "at": "Wednesday 20:00",
     "length": 60
   },
   {
     "title": "A&G NEXT GENERATION Lady GO!! 木曜日 高森奈津美",
-    "at": "Thursday 17:00",
+    "at": "Thursday 20:00",
     "length": 60
   },
   {
     "title": "A&G NEXT GENERATION Lady GO!! 金曜日 三上枝織",
-    "at": "Friday 17:00",
+    "at": "Friday 20:00",
     "length": 60
   },
   {
@@ -72,6 +102,16 @@
   {
     "title": "大久保瑠美・原紗友里　青春学園 Girls High↑↑",
     "at": "Sunday 01:30",
+    "length": 30
+  },
+  {
+    "title": "TrySailのTRYangle harmony (repeat)",
+    "at": "Sunday 12:30",
+    "length": 30
+  },
+  {
+    "title": "TrySailのTRYangle harmony",
+    "at": "Wednesday 00:30",
     "length": 30
   }
 ]

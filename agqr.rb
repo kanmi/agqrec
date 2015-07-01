@@ -14,7 +14,7 @@ AGQR = "rtmpdump -q -r #{AGQR_STREAM_URL} --live -o '%s' -B %s 2>&1 >/dev/null"
 
 module Clockwork
   schedule = JSON.load(File.read('./schedule.json'))
-  slack = SlackAPI.new("xoxp-2358774485-2358774487-2894066442-f841bf")
+  slack = SlackAPI.new(ENV["SLACK_TOKEN"])
 
   handler do |job, time|
 	job = schedule.select { |e| e["title"] == job }[-1]
@@ -26,7 +26,7 @@ module Clockwork
 	  slack.chat_post_message( username: "agqr_bot",
 							   icon_url: "http://agqr.jp/img/ag_icon.gif",
 							   channel:  "#agqr", 
-							   text:     "#{job['title']} の録画が始まったよ")
+							   text:     "録画開始#{job['title']} ")
 	  end
 
 	  system(AGQR % [ "#{DATA_DIR}/#{job['title']}/[#{time.strftime '%Y-%m-%d'}] #{job['title']}.flv",
@@ -34,8 +34,8 @@ module Clockwork
 
 	  slack.chat_post_message( username: "agqr_bot",
 							   icon_url: "http://agqr.jp/img/ag_icon.gif",
-							   channel:  "#agqr",
-							   text:     "#{job['title']} の録画が終わったよ")
+							   channel:  "#agqr", 
+							   text:     "録画終了: #{job['title']}")
 	end
   end
 
