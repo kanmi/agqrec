@@ -9,6 +9,7 @@ class Config
 
     @notification_methods = conf['notification_methods'] ? [conf['notification_methods']].flatten : []
     @save_path = conf['save_path'] || "./record/%{title}/%{time} - %{title}"
+    @schedule_file = conf['schedule_file'] || "./schedule.json"
     @time_format = conf['time_format'] || '%Y-%m-%d'
   end
 
@@ -20,6 +21,7 @@ class Config
     {
       notification_methods: @notification_methods,
       save_path: @save_path,
+      schedule_file: @schedule_file,
       time_format: @time_format
     }
   end

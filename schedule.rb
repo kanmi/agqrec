@@ -4,9 +4,8 @@ require_relative 'config'
 class Schedule
   include Enumerable
   
-  def initialize(schedule_file = "./schedule.json")
-    config = Config.new
-    schedule = JSON.parse(File.read(schedule_file)) rescue []
+  def initialize(config = Config.new)
+    schedule = JSON.parse(File.read(config.schedule_file)) rescue []
     @schedule = schedule.map do |s|
       {
         title: s['title'],
