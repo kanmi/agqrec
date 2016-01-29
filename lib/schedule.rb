@@ -4,8 +4,8 @@ require_relative 'config'
 class Schedule
   include Enumerable
   
-  def initialize(config = Config.new)
-    schedule = JSON.parse(File.read(config.schedule_file)) rescue []
+  def initialize
+    schedule = JSON.parse(File.read(Config.schedule_file)) rescue []
     @schedule = schedule.map do |s|
       {
         provider: s['provider'],
@@ -13,7 +13,7 @@ class Schedule
         from: s['from'],
         to: s['to'],
         sound_only: s['sound_only'] || false,
-        margin: s['margin'] || config.margin,
+        margin: s['margin'] || Config.margin,
         interval: s['interval'] || 7
       }.tap { |_|
         def _.to_clockwork_at

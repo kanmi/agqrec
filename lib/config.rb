@@ -1,28 +1,51 @@
 require 'json'
 
-class Config
-  attr_accessor :notification_methods, :save_path, :schedule_file, :time_format
+module Config
+  class << self
+    def config
+      config ||= {
+        save_path: "./record/%{title}/%{time} - %{title}",
+        schedule_file: "./schedule.json",
+        time_format: '%Y-%m-%d'
+      }
+    end
 
-  def initialize(conf_file = "./config.json")
-    @conf_file = conf_file
-    conf = JSON.parse(File.read(conf_file)) rescue {}
+    def config=(config)
+      if @config
+        @config.each do |key, value|
+          next unless instance_variable_get('@key'.to_sym)
+          key = key.to_s
+          self.class.class_eval {
+            undef_method key
+            undef_method key+'='
+          }
+        end
+      end
+      
+      config.each do |key, value|
+        self.class.class_eval { attr_accessor key.to_sym }
+        instance_variable_set("@#{key}".to_sym, value)
+      end
 
-    @notification_methods = conf['notification_methods'] ? [conf['notification_methods']].flatten : []
-    @save_path = conf['save_path'] || "./record/%{title}/%{time} - %{title}"
-    @schedule_file = conf['schedule_file'] || "./schedule.json"
-    @time_format = conf['time_format'] || '%Y-%m-%d'
+      @config = config.to_a.map { |c|
+        [ c[0].to_sym, c[1] ]
+      }.to_h
+    end
   end
 
-  def save
-    File.write(@conf_file, to_h.to_json)
+  module Methods
+    def load(config_file = 'config.json')
+      Config.config = JSON.parse(File.read(config_file)) rescue Config.config
+    end
+    
+    def save(config_file = 'config.json')
+      File.write(config_file, JSON.pretty_generate(to_h))
+    end
+
+    def to_h
+      Config.config
+    end
   end
 
-  def to_h
-    {
-      notification_methods: @notification_methods,
-      save_path: @save_path,
-      schedule_file: @schedule_file,
-      time_format: @time_format
-    }
-  end
+  extend Methods
 end
