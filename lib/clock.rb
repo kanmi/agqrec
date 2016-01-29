@@ -9,7 +9,7 @@ module Clockwork
 
   ( config.notification_methods +
     schedules.map { |s| s[:provider] }.uniq ).each do |name|
-    require_relative "plugin/" + name
+    require_relative "../plugin/" + name
   end
 
   configure do |conf|
