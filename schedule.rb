@@ -8,11 +8,13 @@ class Schedule
     schedule = JSON.parse(File.read(config.schedule_file)) rescue []
     @schedule = schedule.map do |s|
       {
+        provider: s['provider'],
         title: s['title'],
         from: s['from'],
         to: s['to'],
         sound_only: s['sound_only'] || false,
-        margin: s['margin'] || config.margin
+        margin: s['margin'] || config.margin,
+        interval: s['interval'] || 7
       }
     end
   end
