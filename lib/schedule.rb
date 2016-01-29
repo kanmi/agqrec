@@ -15,8 +15,15 @@ class Schedule
         sound_only: s['sound_only'] || false,
         margin: s['margin'] || config.margin,
         interval: s['interval'] || 7
+      }.tap { |_|
+        def _.to_clockwork_at
+          (DateTime.parse(self[:from]) - self[:margin].seconds).strftime("%A %R")
+        end
+        break _
       }
     end
+
+    self
   end
 
   def [](idx)
@@ -25,5 +32,9 @@ class Schedule
 
   def each &block
     @schedule.each(&block)
+  end
+
+  def all
+    @schedule
   end
 end
