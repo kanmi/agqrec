@@ -13,18 +13,12 @@ module Config
     def config=(config)
       if @config
         @config.each do |key, value|
-          next unless instance_variable_get('@key'.to_sym)
-          key = key.to_s
-          self.class.class_eval {
-            undef_method key
-            undef_method key+'='
-          }
+          remove_field(key)
         end
       end
       
       config.each do |key, value|
-        self.class.class_eval { attr_accessor key.to_sym }
-        instance_variable_set("@#{key}".to_sym, value)
+        add_field(key, value)
       end
 
       @config = config.to_a.map { |c|
@@ -40,6 +34,23 @@ module Config
     
     def save(config_file = 'config.json')
       File.write(config_file, JSON.pretty_generate(to_h))
+    end
+
+    def add_field(key, value)
+      unless instance_variable_get('@key'.to_sym)
+        self.class.class_eval { attr_accessor key.to_sym }
+        instance_variable_set("@#{key}".to_sym, value)
+      end
+    end
+
+    def remove_field(key)
+      if instance_variable_get('@key'.to_sym)
+        key = key.to_s
+        self.class.class_eval {
+          undef_method key
+          undef_method key+'='
+        }
+      end
     end
 
     def to_h
