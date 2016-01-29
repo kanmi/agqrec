@@ -1,7 +1,7 @@
 require 'json'
 
 class Config
-  attr_accessor :notification_methods, :save_path, :time_format
+  attr_accessor :notification_methods, :save_path, :schedule_file, :time_format
 
   def initialize(conf_file = "./config.json")
     @conf_file = conf_file
