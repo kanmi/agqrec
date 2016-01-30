@@ -68,6 +68,36 @@ function reloadClockwork() {
     $.get('/api/reload_clockwork');
 }
 
+function showScheduleDialog() {
+    $('#createScheduleDialog').dialog('open');
+}
+
+function createSchedule(forms) {
+    console.log(forms);
+    var data = {};
+    $.each(forms, function(idx, form) {
+        data[form.id] = form.value;
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/api/schedules",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType : "application/json",
+        success: function(){}
+    });
+
+    reloadScheduleTable();
+}
+
 $(document).ready(function() {
     reloadScheduleTable();
+    $('#createScheduleDialog').dialog({
+        autoOpen: false,
+        closeOnEscape: false,
+        draggable: false,
+        modal: true,
+        width: 700
+    });
 });

@@ -14,7 +14,8 @@
     margin-right: 10px;
  }
 
-#schedule_table {
+.dialog-form input {
+    width: 400px;
 }
 
 .footer {

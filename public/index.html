@@ -7,19 +7,20 @@
 
         <title>AGQRec</title>
 
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/agqrec.js"></script>
 
-        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
         <link rel="stylesheet" href="/css/agqrec.css">
 
         <!--[if lte IE 8]>
-            <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+            <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
         <!--<![endif]-->
         <!--[if gt IE 8]><!-->
-            <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+            <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
         <!--<![endif]-->
     </head>
 
@@ -29,8 +30,9 @@
                 <a href="/" class="pure-menu-heading pure-menu-link">AGQRec</a>
                 <ul class="pure-menu-list" style="float:right">
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link"></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="updateSchedules()"><span class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="reloadClockwork()"><span class="glyphicon glyphicon-refresh">Reload Clockwork</span></a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="updateSchedules()"><span class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="showScheduleDialog()" ><span class="glyphicon glyphicon-plus">Add</span></a></li>
                 </ul>
             </div>
         </div>
@@ -53,6 +55,33 @@
             </div>
             <div class="pure-u-1-24"></div>
         </div>
+        <div id="createScheduleDialog" class="dialog-form" title="New Schedule">
+            <form id="createScheduleForm" class="pure-form pure-form-aligned">
+                <fieldset>
+                    <div class="pure-control-group">
+                        <label for="provider">Content Provider</label>
+                        <input id="provider" type="text" placeholder="AGQR" value="AGQR">
+                    </div>
 
+                    <div class="pure-control-group">
+                        <label for="title">Title</label>
+                        <input id="title" type="text" placeholder="A&G NEXT GENERATION Lady GO!! 月曜日 上坂すみれ">
+                    </div>
+
+                    <div class="pure-control-group">
+                        <label for="at">Scheduled at</label>
+                        <input id="at" type="text" placeholder="Monday 19:30">
+                    </div>
+
+                    <div class="pure-control-group">
+                        <label for="length">Length (min)</label>
+                        <input id="length" type="text" placeholder="30">
+
+                    <div class="pure-controls">
+                        <button type="submit" class="pure-button pure-button-primary" onclick="createSchedule($('#createScheduleForm fieldset input'));">Submit</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </body>
 </html>
