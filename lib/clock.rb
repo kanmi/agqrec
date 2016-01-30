@@ -8,6 +8,7 @@ module Clockwork
     schedules = Schedule.all
 
     schedules.map { |s| s[:provider] }.uniq.each do |name|
+      next if name.nil?
       require_relative "../plugin/" + name
       Object.const_get(name).init
     end
@@ -17,10 +18,14 @@ module Clockwork
     end
     
     schedules.each do |schedule|
-	  every(schedule[:interval].days, schedule[:title], at: schedule.to_clockwork_at) do
-        sleep(60-(schedule[:margin]%60))
-	    puts "Running #{schedule["title"]}, at #{}"
-        Object.const_get(schedule[:provider]).record(schedule)
+      if schedule[:provider] && Object.const_get(schedule[:provider])
+	    every(schedule[:interval].days, schedule[:title], at: schedule.to_clockwork_at) do
+          sleep(60-(schedule[:margin]%60))
+	      puts "Running #{schedule["title"]}, at #{}"
+          Object.const_get(schedule[:provider]).record(schedule)
+        end
+      else
+        puts "Failed to find provider '#{schedule[:provider]}'"
       end
     end
   end
