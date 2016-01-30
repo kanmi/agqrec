@@ -1,3 +1,5 @@
 source 'https://rubygems.org'
 
 gem 'clockwork'
+gem 'sinatra', '1.4.6'
+gem 'sinatra-contrib', '1.4.6'
