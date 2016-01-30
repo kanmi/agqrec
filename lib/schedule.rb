@@ -22,14 +22,19 @@ module Schedule
       end
     end
 
+    def add(schedule)
+      schedules << schedule
+    end
+
     def update(schedule)
-      idx = @schedules.index { |s| s[:title] == schedule[:title] }
-      @schedules[idx] = schedule if @schedules[idx]
-      @schedules[idx]
+      idx = schedules.index { |s| s[:title] == schedule[:title] }
+      return if schedules[idx].nil?
+      schedules[idx] = schedule 
+      schedules[idx]
     end
 
     def delete(title)
-      @schedules.delete_if { |s| s[:title] == title }
+      schedules.delete_if { |s| s[:title] == title }
     end
 
     def clear
@@ -37,7 +42,7 @@ module Schedule
     end
 
     def save
-      File.write(Config.schedule_file, JSON.pretty_generate(@schedule))
+      File.write(Config.schedule_file, JSON.pretty_generate(schedule))
     end
   end
 

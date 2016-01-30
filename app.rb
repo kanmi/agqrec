@@ -38,10 +38,8 @@ class API < Sinatra::Base
   end
 
   post '/schedules' do
-    schedules =  Schedule.all
-    schedules += [JSON.parse(request.body.read, symbolize_names: true )].flatten
-    schedules.each do |schedule|
-      Schedule.update(schedule)
+    [JSON.parse(request.body.read, symbolize_names: true )].flatten.each do |schedule|
+      Schedule.add(schedule)
     end
     json status: 'ok'
   end
