@@ -9,6 +9,7 @@ module Clockwork
 
     schedules.map { |s| s[:provider] }.uniq.each do |name|
       require_relative "../plugin/" + name
+      Object.const_get(name).init
     end
 
     configure do |conf|
@@ -26,8 +27,19 @@ module Clockwork
 
   class << self
     def reload!
+      Clockwork.kill
       Clockwork.clear!
       @init_proc.call
+      Clockwork.run
+    end
+
+    alias_method :run_orig, :run
+    def run
+      @clockwork_thread = Thread.start { self.run_orig }
+    end
+
+    def kill
+      @clockwork_thread.kill if @clockwork_thread
     end
   end
 end
