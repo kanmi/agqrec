@@ -4,7 +4,7 @@ module Config
   class << self
     def config
       config ||= {
-        save_path: "./record/%{title}/%{time} - %{title}",
+        save_path: "./record/%{title}/%{time} - %{title}.%{ext}",
         schedule_file: "./schedule.json",
         time_format: '%Y-%m-%d'
       }
