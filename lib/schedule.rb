@@ -1,40 +1,58 @@
 require 'json'
 require_relative 'config'
 
-class Schedule
+module Schedule
   include Enumerable
   
-  def initialize
-    schedule = JSON.parse(File.read(Config.schedule_file)) rescue []
-    @schedule = schedule.map do |s|
-      {
-        provider: s['provider'],
-        title: s['title'],
-        from: s['from'],
-        to: s['to'],
-        sound_only: s['sound_only'] || false,
-        margin: s['margin'] || Config.margin,
-        interval: s['interval'] || 7
-      }.tap { |_|
-        def _.to_clockwork_at
-          (DateTime.parse(self[:from]) - self[:margin].seconds).strftime("%A %R")
-        end
-        break _
-      }
+  class << self
+    def schedules
+      @schedules ||= reload
     end
 
-    self
+    def reload
+      @schedules = (JSON.parse(File.read(Config.schedule_file), symbolize_names: true) rescue []).map do |s|
+        s.tap { |_|
+          _[:interval] ||= 7
+          _[:margin]   ||= 15
+          def _.to_clockwork_at
+            (DateTime.parse(self[:at]) - (self[:margin] || Config.margin).seconds).strftime("%A %R")
+          end
+          break _
+        }
+      end
+    end
+
+    def update(schedule)
+      idx = @schedules.index { |s| s[:title] == schedule[:title] }
+      @schedules[idx] = schedule if @schedules[idx]
+      @schedules[idx]
+    end
+
+    def delete(title)
+      @schedules.delete_if { |s| s[:title] == title }
+    end
+
+    def clear
+      @schedule = []
+    end
+
+    def save
+      File.write(Config.schedule_file, JSON.pretty_generate(@schedule))
+    end
   end
 
-  def [](idx)
-    @schedule[idx]
-  end
+  module Methods
+    def [](idx)
+      schedules[idx]
+    end
 
-  def each &block
-    @schedule.each(&block)
-  end
+    def each &block
+      schedules.each(&block)
+    end
 
-  def all
-    @schedule
+    def all
+      schedules
+    end
   end
+  extend Methods
 end

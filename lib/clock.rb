@@ -5,7 +5,7 @@ require_relative 'schedule'
 
 module Clockwork
   @init_proc = Proc.new do
-    schedules = Schedule.new.all
+    schedules = Schedule.all
 
     schedules.map { |s| s[:provider] }.uniq.each do |name|
       require_relative "../plugin/" + name
