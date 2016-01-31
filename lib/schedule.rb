@@ -23,13 +23,27 @@ module Schedule
     end
 
     def add(schedule)
-      schedules << schedule
+      schedules << schedule.tap { |_|
+        _[:interval] ||= 7
+        _[:margin]   ||= 15
+        def _.to_clockwork_at
+          (DateTime.parse(self[:at]) - (self[:margin] || Config.margin).seconds).strftime("%A %R")
+        end
+        break _
+      }
     end
 
     def update(schedule)
       idx = schedules.index { |s| s[:title] == schedule[:title] }
       return if schedules[idx].nil?
-      schedules[idx] = schedule 
+      schedules[idx] = schedule.tap { |_|
+        _[:interval] ||= 7
+        _[:margin]   ||= 15
+        def _.to_clockwork_at
+          (DateTime.parse(self[:at]) - (self[:margin] || Config.margin).seconds).strftime("%A %R")
+        end
+        break _
+      }
       schedules[idx]
     end
 
