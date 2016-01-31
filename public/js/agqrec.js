@@ -24,6 +24,9 @@ function removeScheduleTableRow (obj) {
         return (v.title !== title);
     });
     target.remove();
+
+    $('#menu-save').removeClass('glyphicon-floppy-saved');
+    $('#menu-save').addClass('glyphicon-floppy-disk');
 }
 
 function reloadScheduleTable (schedules) {
@@ -59,6 +62,9 @@ function updateSchedules() {
 
         });
 
+        $('#menu-save').removeClass('glyphicon-floppy-disk');
+        $('#menu-save').addClass('glyphicon-floppy-saved');
+
         reloadScheduleTable();
     });
 }
@@ -73,7 +79,6 @@ function showScheduleDialog() {
 }
 
 function createSchedule(forms) {
-    console.log(forms);
     var data = {};
     $.each(forms, function(idx, form) {
         data[form.id] = form.value;
