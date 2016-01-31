@@ -22,7 +22,7 @@ module Clockwork
 	    every(schedule[:interval].days, schedule[:title], at: schedule.to_clockwork_at) do
           sleep(60-(schedule[:margin]%60))
 	      puts "Running #{schedule["title"]}, at #{}"
-          Object.const_get(schedule[:provider]).record(schedule)
+          Object.const_get(schedule[:provider]).run(schedule)
         end
       else
         puts "Failed to find provider '#{schedule[:provider]}'"
