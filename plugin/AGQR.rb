@@ -23,12 +23,12 @@ module AGQR
 
     def update_schedules
       doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.php")))
-      len = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
+      rowspans = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
 
       wd_index = []
       wd = [0] * 7
 
-      l = len.clone
+      l = rowspans.clone
       while !l.empty?
         wd.each.with_index do |_, i|
           if _ == 0
@@ -56,7 +56,7 @@ module AGQR
           url: title_node.class != Oga::XML::Text ? title_node.attribute("href").value.strip : "",
           personality: rp_node.text.strip.toutf8,
           email: rp_node.children_without_text.first.tap { |_| break _.nil? ? "" : _.attribute("href").value.strip.sub(/^mailto:/, "") },
-          length: len.flatten[i] * 30
+          length: rowspans[i] * 30
         }
       }.reject { |s| s[:title] == '放送休止' }
     end
