@@ -2,15 +2,17 @@ require 'clockwork'
 
 require_relative 'config'
 require_relative 'schedule'
+require_relative 'plugin'
 
 module Clockwork
   @init_proc = Proc.new do
     schedules = Schedule.all
 
-    schedules.map { |s| s[:provider] }.uniq.each do |name|
-      next if name.nil?
-      require_relative "../plugin/" + name
-      Object.const_get(name).init
+    
+    Plugin.each do |plugin|
+      if plugin.respond_to?(:update_schedules)
+        every(1.days, "Update #{name} schedules") { plugin.update_schedules }
+      end
     end
 
     configure do |conf|
