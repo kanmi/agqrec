@@ -16,6 +16,8 @@ ScheduleTable.prototype = {
             $.each(caller.editItems, function(_, item) { editItemsColumn.append($(item)); });
             $(caller.target).append(
                 $('<tr></tr>')
+                    .hover(function () { $(this).addClass('highlight-row'); },
+                           function () { $(this).removeClass('highlight-row'); })
                     .append($("<td></td>").text(schedule.provider))
                     .append($("<td></td>").text(schedule.title))
                     .append($("<td></td>").text(schedule.at))
