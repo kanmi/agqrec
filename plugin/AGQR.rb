@@ -39,6 +39,7 @@ module AGQR
         wd.map! { |_| _ - 1 } while !wd.include?(0)
       end
 
+      weekdays = %w(Mon Tue Wed Thu Fri Sat Sun)
       @schedules = doc.css(".title-p").map.with_index { |schedule, i|
         schedule = schedule.parent.children_without_text
         time_node  = schedule.find { |_| _.attribute('class').value.split.include?('time') }
@@ -48,16 +49,16 @@ module AGQR
           break _.children.first
         }
 
+        weekday = (time_node.text.strip =~ /^\d:\d\d$/) ? weekdays[(wd_index[i]+1)%7] : weekdays[wd_index[i]]
         {
-          time: time_node.text.strip,
+          at: "#{weekday} #{time_node.text.strip}",
           title: title_node.text.strip.toutf8,
           url: title_node.class != Oga::XML::Text ? title_node.attribute("href").value.strip : "",
           personality: rp_node.text.strip.toutf8,
           email: rp_node.children_without_text.first.tap { |_| break _.nil? ? "" : _.attribute("href").value.strip.sub(/^mailto:/, "") },
-          length: len.flatten[i] * 30,
-          weekday: %w(月 火 水 木 金 土 日)[wd_index[i]],
+          length: len.flatten[i] * 30
         }
-      }
+      }.reject { |s| s[:title] == '放送休止' }
     end
   end
 

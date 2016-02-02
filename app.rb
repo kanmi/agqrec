@@ -7,8 +7,10 @@ require 'sinatra/json'
 
 require_relative 'lib/config'
 require_relative 'lib/clock'
+require_relative 'lib/plugin'
 
 Config.load
+Plugin.init
 Clockwork.reload!
 
 class AGQREC < Sinatra::Base
@@ -23,6 +25,29 @@ class API < Sinatra::Base
     Clockwork.reload!
 
     'reload!'
+  end
+
+  get '/available_schedules' do
+    content_type :json
+
+    registered_titles = nil
+    params['all'] = params.keys.include?('all')
+    unless params['all']
+      registered_titles = Schedule.all.map { |schedule| schedule[:title] }.uniq
+    end
+
+    schedules = Plugin.all.map { |plugin|
+      plugin.schedules.map { |schedule|
+        schedule.merge(provider: plugin.to_s)
+      }
+    }.flatten.select { |schedule|
+      params['provider'   ].tap { |p| break p ? schedule[:provider] == p     : true } && \
+      params['title'      ].tap { |p| break p ? schedule[:title].include?(p) : true } && \
+      params['personality'].tap { |p| break p ? schedule[:personality].include?(p) : true } && \
+      params['all'        ].tap { |p| break p ? true : !registered_titles.include?(schedule[:title]) }
+    }
+    
+    JSON.pretty_generate(schedules)
   end
 
   get '/schedules' do

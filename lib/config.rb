@@ -6,7 +6,8 @@ module Config
       config ||= {
         save_path: "./record/%{title}/%{time} - %{title}.%{ext}",
         schedule_file: "./schedule.json",
-        time_format: '%Y-%m-%d'
+        time_format: '%Y-%m-%d',
+        providers: ["AGQR"]
       }
     end
 
