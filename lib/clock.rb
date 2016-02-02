@@ -21,7 +21,6 @@ module Clockwork
       if schedule[:provider] && Object.const_get(schedule[:provider])
 	    every(schedule[:interval].days, schedule[:title], at: schedule.to_clockwork_at) do
           sleep(60-(schedule[:margin]%60))
-	      puts "Running #{schedule["title"]}, at #{}"
           Object.const_get(schedule[:provider]).run(schedule)
         end
       else
