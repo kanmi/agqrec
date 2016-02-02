@@ -1,18 +1,29 @@
 ScheduleData = [];
+AvailableScheduleData = [];
 
-function showScheduleTable (schedules) {
+function showScheduleTable (schedules, target) {
+    var editItems = [];
+    if(!target || target == '#schedule_table tbody') {
+        target = '#schedule_table tbody';
+        editItems.push('<span onclick="editScheduleTableRow(this);" class="table-edit glyphicon glyphicon-pencil"></span>');
+        editItems.push('<span onclick="removeScheduleTableRow(this);" class="glyphicon glyphicon-trash"></span>');
+    } else {
+        editItems.push('<span onclick="addScheduleTableRow(this);" class="glyphicon glyphicon-plus"></span>');
+    }
+
     ScheduleData = schedules;
-    $('#schedule_table tbody tr').remove();
+    $(target + ' tr').remove();
     $.each(schedules, function(idx, schedule) {
         var style = (idx%2 == 1) ? "pure-table-odd" : "";
-        $('#schedule_table tbody').append(
+        var editItemsColumn = $('<td></td>');
+        $.each(editItems, function(_, item) { editItemsColumn.append($(item)); });
+
+        $(target).append(
             $('<tr></tr>').addClass(style)
                 .append($("<td></td>").text(schedule.provider))
                 .append($("<td></td>").text(schedule.title))
                 .append($("<td></td>").text(schedule.at))
-                .append($('<td></td>')
-                        .append($('<span onclick="editScheduleTableRow(this);" class="table-edit glyphicon glyphicon-pencil"></span>'))
-                        .append($('<span onclick="removeScheduleTableRow(this);" class="glyphicon glyphicon-trash"></span>')))
+                .append(editItemsColumn)
         );
     });
 }
@@ -29,13 +40,16 @@ function removeScheduleTableRow (obj) {
     $('#menu-save').addClass('glyphicon-floppy-disk');
 }
 
-function reloadScheduleTable (schedules) {
+function reloadScheduleTable (schedules, target, endpoint) {
+    target = target || '#schedule_table tbody';
+    endpoint = endpoint || '/api/schedules';
+
     if (!schedules) {
-        $.getJSON("/api/schedules", function(schedules) {
-            showScheduleTable(schedules);
+        $.getJSON(endpoint, function(schedules) {
+            showScheduleTable(schedules, target);
         });
     } else {
-        showScheduleTable(schedules);
+        showScheduleTable(schedules, target);
     }
 }
 
@@ -98,6 +112,7 @@ function createSchedule(forms) {
 
 $(document).ready(function() {
     reloadScheduleTable();
+    reloadScheduleTable(undefined, '#available_schedule_table tbody', '/api/available_schedules');
     $('#createScheduleDialog').dialog({
         autoOpen: false,
         closeOnEscape: false,
