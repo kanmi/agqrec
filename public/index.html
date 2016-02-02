@@ -31,7 +31,7 @@
                 <ul class="pure-menu-list" style="float:right">
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link"></a></li>
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="reloadClockwork()"><span class="glyphicon glyphicon-refresh">Reload Clockwork</span></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="updateSchedules()"><span id="menu-save" class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="scheduleTable.updateSchedules()"><span id="menu-save" class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="showScheduleDialog()" ><span class="glyphicon glyphicon-plus">Add</span></a></li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
                             <th style="width: 10%">Provider</th>
                             <th>Title</th>
                             <th style="width: 20%">Scheduled at</th>
-                            <th style="width: 10%"></th>
+                            <th style="width: 5%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,14 +62,14 @@
         <div class="content pure-g">
             <div class="pure-u-1-24"></div>
             <div class="pure-u-22-24">
-                <h3>Unregistered Schedules</h3>
+                <h3>Disabled Schedules</h3>
                 <table id="available_schedule_table" class="pure-table pure-table-horizontal" style="width: 733px">
                     <thead>
                         <tr>
                             <th style="width: 10%">Provider</th>
                             <th>Title</th>
                             <th style="width: 20%">Scheduled at</th>
-                            <th style="width: 10%"></th>
+                            <th style="width: 5%"></th>
                         </tr>
                     </thead>
                     <tbody>
