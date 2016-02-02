@@ -1,7 +1,66 @@
+# coding: utf-8
 module AGQR
   require 'fileutils'
   require 'date'
-  
+  require "net/http"
+  require "kconv"
+  require "oga"
+
+  module ::Oga
+    module XML
+      class Node
+        def children_without_text
+          self.tap { |_| break _.children.to_a - _.text_nodes.to_a }.select{ |_| _.class == Oga::XML::Element }
+        end
+      end
+    end
+  end
+
+  class << self
+    def schedules
+      @schedules ||= update_schedules
+    end
+
+    def update_schedules
+      doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.php")))
+      len = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
+
+      wd_index = []
+      wd = [0] * 7
+
+      l = len.clone
+      while !l.empty?
+        wd.each.with_index do |_, i|
+          if _ == 0
+            wd_index << i
+            wd[i] += l.shift
+          end
+        end
+        wd.map! { |_| _ - 1 } while !wd.include?(0)
+      end
+
+      @schedules = doc.css(".title-p").map.with_index { |schedule, i|
+        schedule = schedule.parent.children_without_text
+        time_node  = schedule.find { |_| _.attribute('class').value.split.include?('time') }
+        rp_node    = schedule.find { |_| _.attribute('class').value.split.include?('rp') }
+        title_node = schedule.find { |_| _.attribute('class').value.split.include?('title-p') }.tap { |_|
+          break _.children_without_text.first unless _.children_without_text.first.nil?
+          break _.children.first
+        }
+
+        {
+          time: time_node.text.strip,
+          title: title_node.text.strip.toutf8,
+          url: title_node.class != Oga::XML::Text ? title_node.attribute("href").value.strip : "",
+          personality: rp_node.text.strip.toutf8,
+          email: rp_node.children_without_text.first.tap { |_| break _.nil? ? "" : _.attribute("href").value.strip.sub(/^mailto:/, "") },
+          length: len.flatten[i] * 30,
+          weekday: %w(月 火 水 木 金 土 日)[wd_index[i]],
+        }
+      }
+    end
+  end
+
   module Methods
     def init
       ::Config.add_field(name, {})

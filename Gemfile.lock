@@ -7,19 +7,38 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    ansi (1.5.0)
+    ast (2.2.0)
+    awesome_print (1.6.1)
     backports (3.6.7)
     clockwork (1.2.0)
       activesupport
       tzinfo
+    coderay (1.1.0)
+    coolline (0.5.0)
+      unicode_utils (~> 1.4)
     i18n (0.7.0)
     json (1.8.3)
+    method_source (0.8.2)
     minitest (5.8.4)
     multi_json (1.11.2)
+    oga (2.0.0)
+      ast
+      ruby-ll (~> 2.1)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-coolline (0.2.5)
+      coolline (~> 0.5)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    ruby-ll (2.1.2)
+      ansi
+      ast
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -31,16 +50,22 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
+    slop (3.6.0)
     thread_safe (0.3.5)
     tilt (2.0.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    unicode_utils (1.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   clockwork
+  oga
+  pry
+  pry-coolline
   sinatra (= 1.4.6)
   sinatra-contrib (= 1.4.6)
 
