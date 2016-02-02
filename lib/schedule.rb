@@ -56,7 +56,7 @@ module Schedule
     end
 
     def save
-      File.write(Config.schedule_file, JSON.pretty_generate(schedule))
+      File.write(Config.schedule_file, JSON.pretty_generate(schedules))
     end
   end
 

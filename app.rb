@@ -66,6 +66,7 @@ class API < Sinatra::Base
     [JSON.parse(request.body.read, symbolize_names: true )].flatten.each do |schedule|
       Schedule.add(schedule)
     end
+    Schedule.save
     json status: 'ok'
   end
 
@@ -73,11 +74,13 @@ class API < Sinatra::Base
     [JSON.parse(request.body.read, symbolize_names: true )].flatten.each do |schedule|
       Schedule.update(schedule)
     end
+    Schedule.save
     json status: 'ok'
   end
 
   delete "/schedules/:title" do |title|
     Schedule.delete(title)
+    Schedule.save
     JSON.pretty_generate(Schedule.all)
   end
 end
