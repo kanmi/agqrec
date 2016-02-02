@@ -11,7 +11,7 @@ module Clockwork
     
     Plugin.each do |plugin|
       if plugin.respond_to?(:update_schedules)
-        every(1.days, "Update #{name} schedules") { plugin.update_schedules }
+        every(1.days, "Update #{plugin} schedules") { plugin.update_schedules }
       end
     end
 
