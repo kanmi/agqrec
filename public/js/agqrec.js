@@ -68,10 +68,10 @@ function showScheduleDialog() {
     $('#createScheduleDialog').dialog('open');
 }
 
-scheduled_titles = [];
+scheduled_jobs = [];
 $(document).ready(function() {
     $.getJSON('/api/schedules', function (schedules) {
-        $.each(schedules, function () { scheduled_titles.push(this.title) });
+        scheduled_jobs = schedules;
     });
 
     $.getJSON('/api/available_schedules?all', function (schedules) {
@@ -113,13 +113,17 @@ $(document).ready(function() {
                                             .text(schedules.length != 0 ? schedules[0].at.split(' ')[1] : '')
                                             .attr("rowspan", rowspan));
 
-            $.each(schedules, function() {
+            $.each(schedules, function(_, schedule) {
                 var td = $('<td></td>')
                     .text(this.title)
                     .attr("rowspan", this.length/30)
                     .attr("schedule", JSON.stringify(this));
-
-                var tdClass = (scheduled_titles.indexOf(this.title) != -1) ? 'scheduled-td' : '';
+                var is_scheduled = scheduled_jobs.find( function (v) {
+                                        return ( v.provider == schedule.provider &&
+                                                 v.title    == schedule.title    &&
+                                                 v.at       == schedule.at ); });
+                                
+                var tdClass = is_scheduled ? 'scheduled-td' : '';
                 if (this.title == '放送休止') {
                     tdClass = 'schedule-disable';
                 } else {
@@ -130,16 +134,24 @@ $(document).ready(function() {
                         var td = this;
                         var schedule_json = td.getAttribute('schedule');
                         var schedule = JSON.parse(schedule_json);
-                        var isScheduled = (scheduled_titles.indexOf(schedule.title) != -1);
+                        var isScheduled = scheduled_jobs.find( function (v) {
+                                        return ( v.provider == schedule.provider &&
+                                                 v.title    == schedule.title    &&
+                                                 v.at       == schedule.at ); });
 
                         if (isScheduled) {
                             $.ajax({
-                                url: '/api/schedules/' + schedule.title,
+                                url: '/api/schedules',
                                 type: 'DELETE',
+                                data: schedule_json,
+                                dataType: "json",
+                                contentType : "application/json",
                                 success: function() {
                                     $(td).removeClass('scheduled-td');
-                                    scheduled_titles = scheduled_titles.filter(function (v) {
-                                        return v != schedule.title;
+                                    scheduled_jobs = scheduled_jobs.filter( function (v) {
+                                        return ( v.provider == schedule.provider &&
+                                                 v.title    == schedule.title    &&
+                                                 v.at       == schedule.at );
                                     });
                                 }
                             });
@@ -152,7 +164,7 @@ $(document).ready(function() {
                                 contentType : "application/json",
                                 success: function(){
                                     $(td).addClass('scheduled-td');
-                                    scheduled_titles.push(schedule.title);
+                                    scheduled_jobs.push(schedule);
                                 }
                             });
                         }

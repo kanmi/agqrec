@@ -47,8 +47,12 @@ module Schedule
       schedules[idx]
     end
 
-    def delete(title)
-      schedules.delete_if { |s| s[:title] == title }
+    def delete(schedule)
+      schedules.reject! do |s|
+        s[:provider] == schedule[:provider] && \
+        s[:title]    == schedule[:title] && \
+        s[:at]       == schedule[:at]
+      end
     end
 
     def clear

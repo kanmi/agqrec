@@ -78,9 +78,11 @@ class API < Sinatra::Base
     json status: 'ok'
   end
 
-  delete "/schedules/:title" do |title|
-    Schedule.delete(title)
-    Schedule.save
-    JSON.pretty_generate(Schedule.all)
+  delete "/schedules" do
+    [JSON.parse(request.body.read, symbolize_names: true )].flatten.each do |schedule|
+      Schedule.delete(schedule)
+      Schedule.save
+    end
+    json status: 'ok'
   end
 end
