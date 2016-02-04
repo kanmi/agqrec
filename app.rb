@@ -81,8 +81,8 @@ class API < Sinatra::Base
   delete "/schedules" do
     [JSON.parse(request.body.read, symbolize_names: true )].flatten.each do |schedule|
       Schedule.delete(schedule)
-      Schedule.save
     end
+    Schedule.save
     json status: 'ok'
   end
 end
