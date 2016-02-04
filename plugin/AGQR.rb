@@ -49,16 +49,17 @@ module AGQR
           break _.children.first
         }
 
+        time = DateTime.parse(time_node.text.strip).strftime("%H:%M")
         weekday = (time_node.text.strip =~ /^\d:\d\d$/) ? weekdays[(wd_index[i]+1)%7] : weekdays[wd_index[i]]
         {
-          at: "#{weekday} #{time_node.text.strip}",
+          at: "#{weekday} #{time}",
           title: title_node.text.strip.toutf8,
           url: title_node.class != Oga::XML::Text ? title_node.attribute("href").value.strip : "",
           personality: rp_node.text.strip.toutf8,
           email: rp_node.children_without_text.first.tap { |_| break _.nil? ? "" : _.attribute("href").value.strip.sub(/^mailto:/, "") },
           length: rowspans[i] * 30
         }
-      }.reject { |s| s[:title] == '放送休止' }
+      }
     end
   end
 

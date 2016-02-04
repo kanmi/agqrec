@@ -3,7 +3,7 @@
 }
 
 .content {
-    width: 800px;
+    width: 1200px;
     margin-top:1.5%;
     margin-bottom: 1.5%;
     margin-right: auto;
@@ -50,6 +50,14 @@
     background: rgb(66, 184, 221); /* this is a light blue */
 }
 
-.highlight-row {
-    background: #dddddd;
+td.highlight-td {
+    background: #cccccc !important;
+}
+
+td.scheduled-td {
+    background: #A6E39D;
+}
+
+td.schedule-disable {
+    background: #DA6272;
 }
