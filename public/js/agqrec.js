@@ -52,10 +52,15 @@ $(document).ready(function() {
                                             .attr("rowspan", rowspan));
 
             $.each(schedules, function(_, schedule) {
+                var text = (schedule.url != "") ?
+                    $('<a></a>').text(schedule.title).attr('href', schedule.url).attr('target', '_blank').click(function (e) { e.stopPropagation(); })
+ :
+                    $('<div></div>').text(schedule.title);
+
                 var td = $('<td></td>')
-                    .text(this.title)
-                    .attr("rowspan", this.length/30)
-                    .attr("schedule", JSON.stringify(this));
+                    .attr("rowspan", schedule.length/30)
+                    .attr("schedule", JSON.stringify(schedule))
+                    .append(text);
                 var is_scheduled = scheduled_jobs.find( function (v) {
                                         return ( v.provider == schedule.provider &&
                                                  v.title    == schedule.title    &&
@@ -112,7 +117,7 @@ $(document).ready(function() {
                 td.addClass(tdClass);
                 row.append(td);
             });
-            $('#time_table tbody').append(row);
+            $('#AGQR tbody').append(row);
         });
     });
 
