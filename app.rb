@@ -15,7 +15,7 @@ Clockwork.reload!
 
 class AGQREC < Sinatra::Base
   get '/' do
-    send_file File.join(settings.public_folder, 'index.html')
+    erb 'index.html'.to_sym
   end
 end
 

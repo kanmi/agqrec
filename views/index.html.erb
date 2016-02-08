@@ -3,24 +3,24 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A layout example that shows off a responsive product landing page.">
+        <meta name="description" content="">
 
         <title>AGQRec</title>
 
-        <script type="text/javascript" src="//code.jquery.com/jquery-2.2.0.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="/components/jquery-ui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/agqrec.js"></script>
 
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-        <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+        <link rel="stylesheet" href="/components/jquery-ui/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="/components/pure/build/pure-min.css">
+        <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="/css/agqrec.css">
 
         <!--[if lte IE 8]>
-            <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+            <link rel="stylesheet" href="/components/pure/build/grids-responsive-old-ie-min.css">
         <!--<![endif]-->
         <!--[if gt IE 8]><!-->
-            <link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+            <link rel="stylesheet" href="/components/pure/build/grids-responsive-min.css">
         <!--<![endif]-->
     </head>
 
@@ -39,33 +39,50 @@
 
         <hr />
 
-        <div class="content pure-g">
+        <div class="pure-g">
             <div class="pure-u-1-24"></div>
             <div class="pure-u-22-24">
-                <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list">
-                        <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">News</a></li>
-                        <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sports</a></li>
-                        <li class="pure-menu-item"><a href="#" class="pure-menu-link">Finance</a></li>
-                    </ul>
-                </div>
 
-                <table id="AGQR" class="pure-table pure-table-bordered">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th style="width: 13%">Mon</th>
-                            <th style="width: 13%">Tue</th>
-                            <th style="width: 13%">Wed</th>
-                            <th style="width: 13%">Thu</th>
-                            <th style="width: 13%">Fri</th>
-                            <th style="width: 13%">Sun</th>
-                            <th style="width: 13%">Sat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+              <table class="pure-table pure-table-horizontal">
+                  <thead>
+                      <th>Provider</th>
+                      <th>At</th>
+                      <th>Title</th>
+                  </thead>
+                  <tbody>
+                      <% Schedule.all.each do |schedule| %>
+                          <tr schedule='<%= schedule.to_json %>'>
+                              <td><%= schedule[:provider] %></td>
+                              <td><%= schedule[:at]       %></td>
+                              <% if schedule[:url] && schedule[:url] != "" %>
+                                  <td><a href="<%= schedule[:url] %>"><%= schedule[:title] %></a></td>
+                              <% else %>
+                                  <td><%= schedule[:title] %></td>
+                              <% end %>
+                          </tr>
+                      <% end %>
+                  </tbody>
+              </table>
+
+              <hr />
+
+              <table id="AGQR" class="pure-table pure-table-bordered">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th style="width: 13%">Mon</th>
+                    <th style="width: 13%">Tue</th>
+                    <th style="width: 13%">Wed</th>
+                    <th style="width: 13%">Thu</th>
+                    <th style="width: 13%">Fri</th>
+                    <th style="width: 13%">Sun</th>
+                    <th style="width: 13%">Sat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+
             </div>
             <div class="pure-u-1-24"></div>
         </div>
