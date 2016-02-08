@@ -44,6 +44,11 @@ $(document).ready(function() {
         }
 
         $.each(time_table, function(idx, schedules) {
+            if (schedules.length == 0) {
+                $('#AGQR tbody').append($('<tr></tr>'));
+                return;
+            }
+
             var rowspan = 1;
             for(; time_table[idx+rowspan] && time_table[idx+rowspan].length == 0; rowspan++);
             
@@ -53,8 +58,7 @@ $(document).ready(function() {
 
             $.each(schedules, function(_, schedule) {
                 var text = (schedule.url != "") ?
-                    $('<a></a>').text(schedule.title).attr('href', schedule.url).attr('target', '_blank').click(function (e) { e.stopPropagation(); })
- :
+                    $('<a></a>').text(schedule.title).attr('href', schedule.url).attr('target', '_blank') :
                     $('<div></div>').text(schedule.title);
 
                 var td = $('<td></td>')
