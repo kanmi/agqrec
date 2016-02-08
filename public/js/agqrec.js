@@ -57,9 +57,7 @@ $(document).ready(function() {
                                             .attr("rowspan", rowspan));
 
             $.each(schedules, function(_, schedule) {
-                var text = (schedule.url != "") ?
-                    $('<a></a>').text(schedule.title).attr('href', schedule.url).attr('target', '_blank') :
-                    $('<div></div>').text(schedule.title);
+                var text = $('<div></div>').text(schedule.title);
 
                 var td = $('<td></td>')
                     .attr("rowspan", schedule.length/30)
