@@ -6,16 +6,6 @@
     width: 400px;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 50px;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 td.highlight-td {
     background: #AEC1E3 !important;
 }

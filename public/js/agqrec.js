@@ -45,7 +45,7 @@ $(document).ready(function() {
 
         $.each(time_table, function(idx, schedules) {
             if (schedules.length == 0) {
-                $('#AGQR tbody').append($('<tr></tr>'));
+                $('#AGQR-table tbody').append($('<tr></tr>'));
                 return;
             }
 
@@ -119,7 +119,7 @@ $(document).ready(function() {
                 td.addClass(tdClass);
                 row.append(td);
             });
-            $('#AGQR tbody').append(row);
+            $('#AGQR-table tbody').append(row);
         });
     });
 
