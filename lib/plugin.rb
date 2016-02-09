@@ -12,7 +12,9 @@ module Plugin
   module Methods
     def init
       Config.providers.each do |name|
-        require_relative "../plugin/" + name
+        next unless Object.const_get(name) rescue nil
+
+        require_relative "../plugin/#{name}/#{name}"
         plugin = Object.const_get(name)
         plugin.init if plugin.respond_to?(:init)
         plugins << plugin

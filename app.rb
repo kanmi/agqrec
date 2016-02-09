@@ -15,7 +15,19 @@ Clockwork.reload!
 
 class AGQREC < Sinatra::Base
   get '/' do
-    erb 'index.html'.to_sym
+    @templates = {}
+    Plugin.plugins.each do |plugin|
+      template_dir = "./plugin/#{plugin}/views"
+      plugin =plugin.name.to_sym
+      @templates[plugin] ||= {}
+      Dir.entries(template_dir)
+          .map { |p| File.join(template_dir, p) }
+          .select { |p| File.file?(p) && (p =~ /\.html\.erb$/) }.each do |f|
+        @templates[plugin][File.basename(f).sub(/\.html\.erb$/, '').to_sym] = Tilt[:erb].new(f).render
+      end
+    end
+
+    render :erb, :'index.html'
   end
 end
 

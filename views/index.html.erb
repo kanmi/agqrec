@@ -36,7 +36,9 @@
             <div class="col-10-12">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                    <li><a href="#AGQR" data-toggle="tab">AGQR</a></li>
+                    <% Plugin.plugins.map(&:to_s).each do |plugin| %>
+                    <li><a href="#<%= plugin %>" data-toggle="tab"><%= plugin %></a></li>
+                    <% end %>
                 </ul>
 
                 <div class="tab-content">
@@ -53,9 +55,9 @@
                                         <td><%= schedule[:provider] %></td>
                                         <td><%= schedule[:at]       %></td>
                                         <% if schedule[:url] && schedule[:url] != "" %>
-                                            <td><a href="<%= schedule[:url] %>" target="_blank"><%= schedule[:title] %></a></td>
+                                        <td><a href="<%= schedule[:url] %>" target="_blank"><%= schedule[:title] %></a></td>
                                         <% else %>
-                                            <td><%= schedule[:title] %></td>
+                                        <td><%= schedule[:title] %></td>
                                         <% end %>
                                     </tr>
                                 <% end %>
@@ -63,24 +65,13 @@
                         </table>
                     </div>
 
-                    <div class="tab-pane" id="AGQR">
-                        <table id="AGQR-table" class="table table-bordered table-responsive">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th style="width: 13%">Mon</th>
-                                    <th style="width: 13%">Tue</th>
-                                    <th style="width: 13%">Wed</th>
-                                    <th style="width: 13%">Thu</th>
-                                    <th style="width: 13%">Fri</th>
-                                    <th style="width: 13%">Sun</th>
-                                    <th style="width: 13%">Sat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                    <% Plugin.plugins.map(&:name).each do |plugin| %>
+                    <div class="tab-pane" id="<%= plugin %>">
+                        <% @templates[plugin.to_sym].each do |name, template| %>
+                        <%= template %>
+                        <% end %>
                     </div>
+                    <% end %>
                 </div>
             </div>
             <div class="col-1-12"></div>
