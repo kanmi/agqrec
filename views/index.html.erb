@@ -2,48 +2,42 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>AGQRec</title>
 
         <script type="text/javascript" src="/components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="/components/jquery-ui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/components/bootstrap/js/bootstrap.js "></script>
         <script type="text/javascript" src="/js/agqrec.js"></script>
 
         <link rel="stylesheet" href="/components/jquery-ui/themes/smoothness/jquery-ui.css">
-        <link rel="stylesheet" href="/components/pure/build/pure-min.css">
         <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="/css/agqrec.css">
-
-        <!--[if lte IE 8]>
-            <link rel="stylesheet" href="/components/pure/build/grids-responsive-old-ie-min.css">
-        <!--<![endif]-->
-        <!--[if gt IE 8]><!-->
-            <link rel="stylesheet" href="/components/pure/build/grids-responsive-min.css">
-        <!--<![endif]-->
     </head>
 
     <body>
-        <div class="header">
-            <div class="pure-menu pure-menu-horizontal">
-                <a href="/" class="pure-menu-heading pure-menu-link">AGQRec</a>
-                <ul class="pure-menu-list" style="float:right">
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="reloadClockwork()"><span class="glyphicon glyphicon-refresh">Reload Clockwork</span></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="scheduleTable.updateSchedules()"><span id="menu-save" class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="showScheduleDialog()" ><span class="glyphicon glyphicon-plus">Add</span></a></li>
+        <div class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">AGQRec</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="reloadClockwork()"><span class="glyphicon glyphicon-refresh">Reload Clockwork</span></a></li>
+                    <li><a href="#" onclick="scheduleTable.updateSchedules()"><span id="menu-save" class="glyphicon glyphicon-floppy-saved">Save</span></a></li>
+                    <li><a href="#" onclick="showScheduleDialog()" ><span class="glyphicon glyphicon-plus">Add</span></a></li>
                 </ul>
             </div>
         </div>
 
         <hr />
 
-        <div class="pure-g">
-            <div class="pure-u-1-24"></div>
-            <div class="pure-u-22-24">
+        <div class="container">
+            <div class="col-1-12"></div>
+            <div class="col-10-12">
 
-              <table class="pure-table pure-table-horizontal">
+              <table class="table table-striped table-responsive">
                   <thead>
                       <th>Provider</th>
                       <th>At</th>
@@ -55,9 +49,9 @@
                               <td><%= schedule[:provider] %></td>
                               <td><%= schedule[:at]       %></td>
                               <% if schedule[:url] && schedule[:url] != "" %>
-                                  <td><a href="<%= schedule[:url] %>"><%= schedule[:title] %></a></td>
+                              <td><a href="<%= schedule[:url] %>" target="_blank"><%= schedule[:title] %></a></td>
                               <% else %>
-                                  <td><%= schedule[:title] %></td>
+                              <td><%= schedule[:title] %></td>
                               <% end %>
                           </tr>
                       <% end %>
@@ -66,7 +60,7 @@
 
               <hr />
 
-              <table id="AGQR" class="pure-table pure-table-bordered">
+              <table id="AGQR" class="table table-bordered">
                 <thead>
                   <tr>
                     <th></th>
@@ -84,7 +78,7 @@
               </table>
 
             </div>
-            <div class="pure-u-1-24"></div>
+            <div class="col-1-12"></div>
         </div>
 
         <hr />
