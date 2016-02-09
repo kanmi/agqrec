@@ -1,0 +1,24 @@
+{
+  "name": "agqrec",
+  "description": "",
+  "main": "",
+  "authors": [
+    "kanmi"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kanmi/agqrec",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "^1.11.4",
+    "jquery": "^2.2.0",
+    "bootstrap": "^3.3.6"
+  }
+}
