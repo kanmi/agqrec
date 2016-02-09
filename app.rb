@@ -2,7 +2,6 @@ require 'bundler'
 Bundler.setup
 
 require 'sinatra/base'
-require 'sinatra/reloader'
 require 'sinatra/json'
 
 require_relative 'lib/config'
@@ -14,6 +13,15 @@ Plugin.init
 Clockwork.reload!
 
 class AGQREC < Sinatra::Base
+  configure :development do
+    require 'better_errors'
+    use BetterErrors::Middleware
+    BetterErrors.application_root = __dir__
+
+    require 'sinatra/reloader'
+    register Sinatra::Reloader
+  end
+
   get '/' do
     @templates = {}
     Plugin.plugins.each do |plugin|
