@@ -10,8 +10,8 @@ module Schedule
     end
 
     def reload
-      @schedules = (JSON.parse(File.read(Config.schedule_file), symbolize_names: true) rescue []).map do |s|
-        s.tap { |_|
+      @schedules = (JSON.parse(File.read(Config.schedule_file), symbolize_names: true) rescue []).uniq.map do |s|
+        s.tap { |_| 
           _[:interval] ||= 7
           _[:margin]   ||= 15
           def _.to_clockwork_at
