@@ -21,7 +21,15 @@ module AGQR
       @schedules ||= update_schedules
     end
 
-    def update_schedules
+    def update_schedules(force: true)
+      if force || Dir.exists?(Config.tmp_path)
+        if File.exists? 'agqr_schedules.json'
+          return @schedule = JSON.parse(File.join(Config.tmp_path, 'agqr_schedules.json'))
+        end
+      else
+        FileUtils.mkdir_p Config.tmp_path
+      end
+
       doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.php")))
       rowspans = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
 
@@ -60,6 +68,9 @@ module AGQR
           length: rowspans[i] * 30
         }
       }
+
+      File.write(File.join(Config.tmp_path, 'agqr_schedules.json'), JSON.pretty_generate(@schedules))
+      @schedules
     end
   end
 

@@ -5,6 +5,7 @@ module Config
     def config
       config ||= {
         save_path: "./record/%{title}/%{time} - %{title}.%{ext}",
+        tmp_path: "./tmp",
         schedule_file: "./schedule.json",
         time_format: '%Y-%m-%d',
         providers: ["AGQR"]

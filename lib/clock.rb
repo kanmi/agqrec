@@ -8,10 +8,13 @@ module Clockwork
   @init_proc = Proc.new do
     schedules = Schedule.all
 
-    
+    update_time = (Time.now - 1.minute).strftime('%H:%M')
     Plugin.each do |plugin|
       if plugin.respond_to?(:update_schedules)
-        every(1.days, "Update #{plugin} schedules") { plugin.update_schedules }
+        plugin.update_schedules(force: false)
+        every(1.days, "Update #{plugin} schedules", at: update_time) {
+          plugin.update_schedules
+        }
       end
     end
 
