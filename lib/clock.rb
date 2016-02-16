@@ -20,7 +20,7 @@ module Clockwork
     end
     
     schedules.each do |schedule|
-      if schedule[:provider] && Object.const_get(schedule[:provider])
+      if (schedule[:provider] && Object.const_get(schedule[:provider]) rescue nil)
 	    every(schedule[:interval].days, schedule[:title], at: schedule.to_clockwork_at) do
           sleep(60-(schedule[:margin]%60))
           Object.const_get(schedule[:provider]).run(schedule)
