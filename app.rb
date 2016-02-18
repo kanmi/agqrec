@@ -42,7 +42,7 @@ end
 class API < Sinatra::Base
   get '/reload_clockwork' do
     Config.load
-    Clockwork.reload!
+    Clockwork.reload
 
     'reload!'
   end

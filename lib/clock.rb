@@ -6,6 +6,10 @@ require_relative 'plugin'
 
 module Clockwork
   @init_proc = Proc.new do
+    configure do |conf|
+      conf[:thread] = true
+    end
+
     schedules = Schedule.all
 
     update_time = (Time.now - 1.minute).strftime('%H:%M')
@@ -16,10 +20,6 @@ module Clockwork
           plugin.update_schedules
         }
       end
-    end
-
-    configure do |conf|
-      conf[:thread] = true
     end
     
     schedules.each do |schedule|
@@ -35,6 +35,13 @@ module Clockwork
   end
 
   class << self
+    def reload
+      Clockwork.delayed_kill
+      Clockwork.claer
+      @init_proc.call
+      Clockwork.run
+    end
+
     def reload!
       Clockwork.kill
       Clockwork.clear!
@@ -42,12 +49,29 @@ module Clockwork
       Clockwork.run
     end
 
+    def thread_list
+      self.manager.instance_eval {
+        Thread.list.select { |t| t['creator'] == self }
+      }
+    end
+
     alias_method :run_orig, :run
     def run
       @clockwork_thread = Thread.start { self.run_orig }
     end
 
+    def delayed_kill
+      return if Thread.list.find { |t| t['creator'] == self }
+      t = Thread.start { self.kill }
+      t['creator'] = self
+    end
+
     def kill
+      Clockwork.thread_list.first.join while !Clockwork.thread_list.empty?
+      @clockwork_thread.kill if @clockwork_thread
+    end
+
+    def kill!
       @clockwork_thread.kill if @clockwork_thread
     end
   end
