@@ -37,7 +37,7 @@ module Clockwork
   class << self
     def reload
       Clockwork.delayed_kill
-      Clockwork.claer
+      Clockwork.clear!
       @init_proc.call
       Clockwork.run
     end
