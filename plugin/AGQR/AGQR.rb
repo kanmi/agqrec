@@ -30,9 +30,8 @@ module AGQR
         FileUtils.mkdir_p Config.tmp_path
       end
 
-      doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.php")))
+      doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.html")))
       rowspans = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
-
       wd_index = []
       wd = [0] * 7
 
