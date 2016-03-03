@@ -21,6 +21,20 @@ module AGQR
       @schedules ||= update_schedules
     end
 
+    def fetch_timetable(uri = 'http://www.agqr.jp/timetable/streaming.html', limit = 10)
+      raise ArgumentError, 'HTTP redirect too deep' if limit == 0
+
+      response = Net::HTTP.get_response(URI.parse(uri))
+      case response
+      when Net::HTTPSuccess
+        response
+      when Net::HTTPRedirection
+        fetch_timetable(response['location'], limit - 1)
+      else
+        response.value
+      end
+    end
+
     def update_schedules(force: true)
       if force || Dir.exists?(Config.tmp_path)
         if File.exists? 'agqr_schedules.json'
@@ -30,7 +44,7 @@ module AGQR
         FileUtils.mkdir_p Config.tmp_path
       end
 
-      doc = Oga.parse_html(Net::HTTP.get(URI.parse("http://www.agqr.jp/timetable/streaming.html")))
+      doc = Oga.parse_html(fetch_timetable().body)
       rowspans = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
       wd_index = []
       wd = [0] * 7
