@@ -44,7 +44,7 @@ module AGQR
         FileUtils.mkdir_p Config.tmp_path
       end
 
-      doc = Oga.parse_html(fetch_timetable().body)
+      doc = Oga.parse_html(fetch_timetable().body.force_encoding("UTF-8"))
       rowspans = doc.css(".title-p").map { |_| _.parent.attribute("rowspan").tap { |attr| break attr ? attr.value.to_i : 1 } }
       wd_index = []
       wd = [0] * 7
@@ -52,7 +52,7 @@ module AGQR
       l = rowspans.clone
       while !l.empty?
         wd.each.with_index do |_, i|
-          if _ == 0
+          if _ == 0 && !l.empty?
             wd_index << i
             wd[i] += l.shift
           end
