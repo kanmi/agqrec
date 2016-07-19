@@ -15,7 +15,7 @@ module Clockwork
     update_time = (Time.now - 1.minute).strftime('%H:%M')
     Plugin.each do |plugin|
       if plugin.respond_to?(:update_schedules)
-        plugin.update_schedules(force: false)
+        plugin.update_schedules(force: false) rescue nil
         every(1.days, "Update #{plugin} schedules", at: update_time) {
           plugin.update_schedules
         }
