@@ -5,6 +5,7 @@ module AGQR
   require "net/http"
   require "kconv"
   require "oga"
+  require "chronic"
 
   module ::Oga
     module XML
@@ -70,7 +71,7 @@ module AGQR
           break _.children.first
         }
 
-        time = DateTime.parse(time_node.text.strip).strftime("%H:%M")
+        time = Chronic.parse(time_node.text.strip).strftime("%H:%M")
         weekday = (time_node.text.strip =~ /^\d:\d\d$/) ? weekdays[(wd_index[i]+1)%7] : weekdays[wd_index[i]]
         {
           at: "#{weekday} #{time}",
@@ -103,7 +104,7 @@ module AGQR
 	  system((schedule[:sound_only] ? ::Config.AGQR[:rtmp_cmd_sound] : ::Config.AGQR[:rtmp_cmd]) % {
                title:  schedule[:title],
                ext:    schedule[:sound_only] ? 'aac' : 'flv',
-               time:   DateTime.parse(schedule[:at]).strftime(Config.time_format),
+               time:   Chronic.parse(schedule[:at]).strftime(Config.time_format),
                length: schedule[:length].to_i * 60 + schedule[:margin].to_i * 2
              })
       

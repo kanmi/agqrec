@@ -1,4 +1,5 @@
 require 'clockwork'
+require 'active_support/all'
 
 require_relative 'config'
 require_relative 'schedule'

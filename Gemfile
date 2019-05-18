@@ -5,6 +5,10 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'oga'
 
+gem 'rack'
+gem 'activesupport'
+gem 'chronic'
+
 group :development do
   gem 'pry'
   gem 'pry-coolline'
