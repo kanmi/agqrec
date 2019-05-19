@@ -61,7 +61,7 @@ module AGQR
         wd.map! { |_| _ - 1 } while !wd.include?(0)
       end
 
-      weekdays = %w(Mon Tue Wed Thu Fri Sat Sun).reverse
+      weekdays = %w(Mon Tue Wed Thu Fri Sat Sun)
       @schedules = doc.css(".title-p").map.with_index { |schedule, i|
         schedule = schedule.parent.children_without_text
         time_node  = schedule.find { |_| _.attribute('class').value.split.include?('time') }
