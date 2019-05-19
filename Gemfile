@@ -6,7 +6,7 @@ gem 'sinatra-contrib'
 gem 'oga'
 
 gem 'rack'
-gem 'activesupport'
+gem "activesupport", ">= 4.1.11"
 gem 'chronic'
 
 group :development do
